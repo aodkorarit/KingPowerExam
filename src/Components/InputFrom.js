@@ -9,11 +9,15 @@ import {
   MenuItem,
   InputLabel,
   Button,
+  Radio,
+  FormControlLabel,
+  RadioGroup,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
+import Thailand from "../assets/flags/thailand.png";
+import VietNam from "../assets/flags/vietnam.png";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -35,13 +39,55 @@ const useStyles = makeStyles((theme) => ({
   typoLabel: {
     marginRight: "10px",
   },
+  typoLabelRequired: {
+    marginRight: "10px",
+    color: "#f2569a",
+  },
   selectTitle: {
     width: "120px",
   },
   selectNation: {
     width: "180px",
   },
+  formFlex: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  selectPhoneIcon: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "130px",
+  },
+  typoLabelFlags: {
+    marginLeft: "10px",
+  },
+  textfieldCitizenpos1: {
+    width: "50px",
+  },
+  textfieldCitizenpos2: {
+    width: "100px",
+  },
+  textfieldCitizenpos3: {
+    width: "80px",
+  },
 }));
+
+const countries = [
+  {
+    label: "+66",
+    src: Thailand,
+    link: " ",
+    value: "+66",
+  },
+  {
+    label: "+84",
+    src: VietNam,
+    link: " ",
+    value: "+84",
+  },
+];
 
 export default function InputFrom() {
   const classes = useStyles();
@@ -49,17 +95,34 @@ export default function InputFrom() {
     title: "",
     fname: "",
     lname: "",
-    birthday: new Date(),
+    birthday: null,
+    // birthday: new Date(),
     nation: "",
-    citizenID: "",
+    gender: "",
+    flags: "",
+    phone: "",
+    passportNo: "",
+    expectedSalary: "",
+  });
+
+  const [citizenID, setcitizenID] = useState({
+    pos1: "",
+    pos2: "",
+    pos3: "",
+    pos4: "",
+    pos5: "",
   });
 
   const handleBtnSubmit = () => {
     console.log("sdsdsd");
   };
 
+  const handleChangecitizenID = (e) => {
+    const { value, name } = e.target;
+    setcitizenID({ ...citizenID, [name]: value });
+  };
+
   const handleDateChange = (date) => {
-    // setSelectedDate(date);
     setuser({ ...user, ["birthday"]: date });
   };
 
@@ -74,7 +137,8 @@ export default function InputFrom() {
           <Paper className={classes.paper}>
             <Grid item xs={12} container className={classes.gridRow}>
               <Grid item xs={4} container alignItems="center">
-                <Typography className={classes.typoLabel}>Title : *</Typography>
+                <Typography className={classes.typoLabel}>Title : </Typography>
+                <Typography className={classes.typoLabelRequired}>*</Typography>
                 <FormControl
                   variant="outlined"
                   required
@@ -96,26 +160,34 @@ export default function InputFrom() {
               </Grid>
               <Grid item xs={4} container alignItems="center">
                 <Typography className={classes.typoLabel}>
-                  Firstname : *
+                  Firstname :
                 </Typography>
+                <Typography className={classes.typoLabelRequired}>*</Typography>
                 <TextField
-                  id="standard-select-currency"
+                  id="textFieldfname"
                   value={user.fname}
                   name="fname"
                   variant="outlined"
+                  inputProps={{
+                    pattern: "[a-zA-Z]+",
+                  }}
                   required={true}
                   onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={4} container alignItems="center">
                 <Typography className={classes.typoLabel}>
-                  Lastname : *
+                  Lastname :
                 </Typography>
+                <Typography className={classes.typoLabelRequired}>*</Typography>
                 <TextField
-                  id="standard-select-currency"
+                  id="textFieldlname"
                   value={user.lname}
                   name="lname"
                   variant="outlined"
+                  inputProps={{
+                    pattern: "[a-zA-Z]+",
+                  }}
                   required={true}
                   onChange={handleChange}
                 />
@@ -125,7 +197,10 @@ export default function InputFrom() {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid item xs={4} container alignItems="center">
                   <Typography className={classes.typoLabel}>
-                    Birthday : *
+                    Birthday :
+                  </Typography>
+                  <Typography className={classes.typoLabelRequired}>
+                    *
                   </Typography>
                   <KeyboardDatePicker
                     disableToolbar
@@ -135,6 +210,7 @@ export default function InputFrom() {
                     id="date-picker-inline"
                     label="MM/DD/YYYY"
                     value={user.birthday}
+                    required={true}
                     onChange={handleDateChange}
                     KeyboardButtonProps={{
                       "aria-label": "change date",
@@ -157,64 +233,221 @@ export default function InputFrom() {
                     onChange={handleChange}
                   >
                     <MenuItem value={"China"}>China</MenuItem>
-                    <MenuItem value={"France"}>France</MenuItem>
                     <MenuItem value={"Thailand"}>Thailand</MenuItem>
                     <MenuItem value={"VietNam"}>VietNam</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
             </Grid>
-            <Grid item xs={12} container className={classes.gridRow}>
+            <Grid
+              item
+              xs={12}
+              container
+              alignItems="center"
+              className={classes.gridRow}
+            >
               <Typography className={classes.typoLabel}>CitizenID :</Typography>
-              <input
-                id="standard-select-currency"
-                value={user.citizenID}
-                type="number"
-                name="citizenID"
-                variant="outlined"
-                maxlength="1"
-                size={1}
-                required={true}
-                onChange={handleChange}
-              />
               <TextField
                 id="standard-select-currency"
-                value={user.citizenID}
-                type="num"
-                name="citizenID"
+                value={citizenID.pos1}
+                name="pos1"
                 variant="outlined"
-                required={true}
-                onChange={handleChange}
+                className={classes.textfieldCitizenpos1}
+                inputProps={{
+                  maxLength: 1,
+                }}
+                onChange={handleChangecitizenID}
               />
+              <Typography style={{ margin: "0 10px" }}>-</Typography>
               <TextField
                 id="standard-select-currency"
-                value={user.citizenID}
-                type="num"
-                name="citizenID"
+                value={citizenID.pos2}
+                name="pos2"
                 variant="outlined"
-                required={true}
-                onChange={handleChange}
+                className={classes.textfieldCitizenpos2}
+                // inputRef={(input) => {
+                //   if (citizenID.pos1 && !citizenID.pos3) {
+                //     input.focus();
+                //   }
+                // }}
+                // inputRef={textFieldForUsernameRef}
+                inputProps={{
+                  maxLength: 4,
+                }}
+                onChange={handleChangecitizenID}
               />
+              <Typography style={{ margin: "0 10px" }}>-</Typography>
               <TextField
                 id="standard-select-currency"
-                value={user.citizenID}
-                type="num"
-                name="citizenID"
+                value={citizenID.pos3}
+                name="pos3"
                 variant="outlined"
-                required={true}
-                onChange={handleChange}
+                className={classes.textfieldCitizenpos2}
+                inputProps={{
+                  maxLength: 5,
+                }}
+                onChange={handleChangecitizenID}
               />
+              <Typography style={{ margin: "0 10px" }}>-</Typography>
               <TextField
                 id="standard-select-currency"
-                value={user.citizenID}
-                type="num"
-                name="citizenID"
+                value={citizenID.pos4}
+                name="pos4"
                 variant="outlined"
-                required={true}
+                className={classes.textfieldCitizenpos3}
+                inputProps={{
+                  maxLength: 2,
+                }}
+                onChange={handleChangecitizenID}
+              />
+              <Typography style={{ margin: "0 10px" }}>-</Typography>
+              <TextField
+                id="standard-select-currency"
+                value={citizenID.pos5}
+                name="pos5"
+                variant="outlined"
+                className={classes.textfieldCitizenpos1}
+                inputProps={{
+                  maxLength: 1,
+                }}
+                onChange={handleChangecitizenID}
+              />
+            </Grid>
+            <Grid item xs={12} container className={classes.gridRow}>
+              <FormControl className={classes.formFlex}>
+                <Typography className={classes.typoLabel}>Gender :</Typography>
+                <RadioGroup
+                  aria-label="gender"
+                  name="gender"
+                  value={user.gender}
+                  onChange={handleChange}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  <FormControlLabel
+                    value="male"
+                    control={<Radio />}
+                    label="Male"
+                  />
+                  <FormControlLabel
+                    value="female"
+                    control={<Radio />}
+                    label="Female"
+                  />
+                  <FormControlLabel
+                    value="unisex"
+                    control={<Radio />}
+                    label="Unisex"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              container
+              alignItems="center"
+              className={classes.gridRow}
+            >
+              <Typography className={classes.typoLabel}>
+                Mobile Phone :
+              </Typography>
+              <Typography className={classes.typoLabelRequired}>*</Typography>
+              <FormControl
+                variant="outlined"
+                required
+                className={classes.formFlex}
+              >
+                <Select
+                  labelId="demo-simple-select-label"
+                  className={classes.selectPhoneIcon}
+                  id="demo-simple-select"
+                  value={user.flags}
+                  name="flags"
+                  onChange={handleChange}
+                >
+                  {countries.map((option, key) => (
+                    <MenuItem
+                      value={option.value}
+                      key={key}
+                      className={classes.selectPhoneIcon}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <img
+                          src={option.src}
+                          alt={option.label}
+                          width="30"
+                          height="30"
+                        />
+                        <Typography className={classes.typoLabelFlags}>
+                          {option.label}
+                        </Typography>
+                      </div>
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Typography style={{ margin: "0 10px" }}>-</Typography>
+                <TextField
+                  id="standard-select-currency"
+                  value={user.phone}
+                  name="phone"
+                  variant="outlined"
+                  inputProps={{
+                    maxLength: 10,
+                    pattern: "[0-9]{10}",
+                  }}
+                  required={true}
+                  onChange={handleChange}
+                />
+              </FormControl>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              container
+              alignItems="center"
+              className={classes.gridRow}
+            >
+              <Typography className={classes.typoLabel}>
+                Passport No :
+              </Typography>
+              <TextField
+                id="standard-select-currency"
+                value={user.passportNo}
+                name="passportNo"
+                variant="outlined"
                 onChange={handleChange}
               />
             </Grid>
-            <Button type="submit">submit</Button>
+            <Grid item xs={12} container className={classes.gridRow}>
+              <Grid item xs={6} container alignItems="center">
+                <Typography className={classes.typoLabel}>
+                  Expected Salary :
+                </Typography>
+                <Typography className={classes.typoLabelRequired}>*</Typography>
+                <TextField
+                  id="standard-select-currency"
+                  value={user.expectedSalary}
+                  name="expectedSalary"
+                  variant="outlined"
+                  type="number"
+                  required={true}
+                  onChange={handleChange}
+                />
+                <Typography style={{ marginLeft: "10px" }}>THB</Typography>
+              </Grid>
+              <Grid item xs={6} container justify="center" alignItems="center">
+                <Button type="submit">submit</Button>
+              </Grid>
+            </Grid>
           </Paper>
         </Grid>
       </Grid>
