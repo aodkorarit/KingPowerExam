@@ -22,6 +22,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,25 +79,22 @@ const countries = [
   {
     label: "+66",
     src: Thailand,
-    link: " ",
     value: "+66",
   },
   {
     label: "+84",
     src: VietNam,
-    link: " ",
     value: "+84",
   },
 ];
 
-export default function InputFrom() {
+function InputFrom() {
   const classes = useStyles();
   const [user, setuser] = useState({
     title: "",
     fname: "",
     lname: "",
     birthday: null,
-    // birthday: new Date(),
     nation: "",
     gender: "",
     flags: "",
@@ -113,16 +111,18 @@ export default function InputFrom() {
     pos5: "",
   });
 
-  const handleBtnSubmit = () => {
-    console.log("sdsdsd");
-  };
-
   const handleChangecitizenID = (e) => {
     const { value, name } = e.target;
     setcitizenID({ ...citizenID, [name]: value });
   };
 
   const handleDateChange = (date) => {
+    //--
+
+    // let newuser = user;
+    // newuser.birthday = date;
+    // setuser(newuser);
+    //
     setuser({ ...user, ["birthday"]: date });
   };
 
@@ -130,6 +130,22 @@ export default function InputFrom() {
     const { value, name } = e.target;
     setuser({ ...user, [name]: value });
   };
+
+  const handleBtnSubmit = (e) => {
+    e.preventDefault();
+    const data = user;
+    let newcitizenID =
+      citizenID.pos1 +
+      citizenID.pos2 +
+      citizenID.pos3 +
+      citizenID.pos4 +
+      citizenID.pos5;
+
+    data.citizenID = newcitizenID;
+    console.log("data: ", data);
+    dispatch;
+  };
+
   return (
     <form onSubmit={handleBtnSubmit}>
       <Grid container spacing={2}>
@@ -265,12 +281,6 @@ export default function InputFrom() {
                 name="pos2"
                 variant="outlined"
                 className={classes.textfieldCitizenpos2}
-                // inputRef={(input) => {
-                //   if (citizenID.pos1 && !citizenID.pos3) {
-                //     input.focus();
-                //   }
-                // }}
-                // inputRef={textFieldForUsernameRef}
                 inputProps={{
                   maxLength: 4,
                 }}
@@ -445,7 +455,9 @@ export default function InputFrom() {
                 <Typography style={{ marginLeft: "10px" }}>THB</Typography>
               </Grid>
               <Grid item xs={6} container justify="center" alignItems="center">
-                <Button type="submit">submit</Button>
+                <Button type="submit" variant="contained">
+                  submit
+                </Button>
               </Grid>
             </Grid>
           </Paper>
@@ -454,3 +466,4 @@ export default function InputFrom() {
     </form>
   );
 }
+export default connect()(InputFrom);
