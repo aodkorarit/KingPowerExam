@@ -22,7 +22,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   gridRow: {
-    marginBottom: "20px",
+    marginBottom: "15px",
   },
   typoLabel: {
     marginRight: "10px",
@@ -90,6 +90,7 @@ const countries = [
 
 function InputFrom() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [user, setuser] = useState({
     title: "",
     fname: "",
@@ -117,12 +118,6 @@ function InputFrom() {
   };
 
   const handleDateChange = (date) => {
-    //--
-
-    // let newuser = user;
-    // newuser.birthday = date;
-    // setuser(newuser);
-    //
     setuser({ ...user, ["birthday"]: date });
   };
 
@@ -142,8 +137,9 @@ function InputFrom() {
       citizenID.pos5;
 
     data.citizenID = newcitizenID;
+
     console.log("data: ", data);
-    dispatch;
+    dispatch({ type: "ADD_USER", playload: data })
   };
 
   return (
