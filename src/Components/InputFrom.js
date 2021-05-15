@@ -118,7 +118,7 @@ function InputFrom() {
   };
 
   const handleDateChange = (date) => {
-    setuser({ ...user, ["birthday"]: date });
+    setuser({ ...user, birthday: date });
   };
 
   const handleChange = (e) => {
@@ -129,22 +129,44 @@ function InputFrom() {
   const handleBtnSubmit = (e) => {
     e.preventDefault();
     const data = user;
+    const id = Math.floor(Math.random() * 10000);
+    data.userid = id;
     let newcitizenID =
       citizenID.pos1 +
       citizenID.pos2 +
       citizenID.pos3 +
       citizenID.pos4 +
       citizenID.pos5;
-
     data.citizenID = newcitizenID;
+    dispatch({ type: "ADD_USER", playload: data });
+    clearState();
+  };
 
-    console.log("data: ", data);
-    dispatch({ type: "ADD_USER", playload: data })
+  const clearState = () => {
+    setuser({
+      title: "",
+      fname: "",
+      lname: "",
+      birthday: null,
+      nation: "",
+      gender: "",
+      flags: "",
+      phone: "",
+      passportNo: "",
+      expectedSalary: "",
+    });
+    setcitizenID({
+      pos1: "",
+      pos2: "",
+      pos3: "",
+      pos4: "",
+      pos5: "",
+    });
   };
 
   return (
     <form onSubmit={handleBtnSubmit}>
-      <Grid container spacing={2}>
+      <Grid container>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
             <Grid item xs={12} container className={classes.gridRow}>
