@@ -3,7 +3,7 @@ import { connect, useDispatch } from "react-redux";
 import {
   Grid,
   Paper,
-  TextField,
+  FormControl,
   Typography,
   TableHead,
   Checkbox,
@@ -15,6 +15,7 @@ import {
   TableContainer,
   TableRow,
   withStyles,
+  FormControlLabel,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Delete, Edit } from "@material-ui/icons";
@@ -41,34 +42,87 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-function ShowUser({ newuser }) {
+function ShowUser({ newuser, editUser }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [checked, setchecked] = useState();
+  const [selectAll, setselectAll] = useState(false);
+  const [countSelect, setcountSelect] = useState(0);
+  const [checked, setchecked] = useState({});
+
   useEffect(() => {
     dispatch({ type: "GET_USER" });
   }, []);
 
-  const handleChecked = (e) => {
+  const handleSelectAllChecked = () => {
+    let newState = !selectAll;
+    if (newState === false) {
+      setcountSelect(0);
+    } else {
+      setcountSelect(newuser.length);
+    }
+    setselectAll(newState);
+    newuser.forEach((element) => {
+      let newchecked = checked;
+      newchecked[element.userid] = newState;
+      setchecked(newchecked);
+    });
+  };
+
+  const handleChangeChecked = (e) => {
     const { value } = e.target;
-    setchecked({ ...checked, id: value });
-    console.log("value", value);
+    if (selectAll) {
+      setselectAll(false);
+    }
+    let newState = checked[value];
+    setchecked({ ...checked, [value]: !newState });
+    if (!newState == false) {
+      setcountSelect(countSelect - 1);
+    } else {
+      setcountSelect(countSelect + 1);
+    }
   };
 
-  const handleClickEdit = () => {
-    console.log("handleClickEdit");
+  const handleDeleteAll = () => {
+    newuser.forEach((element) => {
+      if (checked[element.userid]) {
+        dispatch({ type: "DELETE_USER", playload: element.userid });
+      }
+    });
+    if (selectAll) {
+      setselectAll(false);
+    }
   };
 
-  const handleClickDelete = () => {
-    console.log("handleClickDelete");
+  const handleClickEdit = (user) => {
+    editUser(user);
+  };
+
+  const handleClickDelete = (userid) => {
+    dispatch({ type: "DELETE_USER", playload: userid });
+  };
+
+  const handledisablebtnDeleteAll = () => {
+    if (countSelect >= 1) {
+      return false;
+    }
+    return true;
   };
 
   return (
     <div>
       <Grid container>
         <Grid container item xs={6} alignItems="center">
-          <Typography className={classes.typoLabel}>Firstname :</Typography>
+          <Checkbox checked={selectAll} onChange={handleSelectAllChecked} />
+          <Typography className={classes.typoLabel}>Select All </Typography>
+          <Button
+            variant="contained"
+            disabled={handledisablebtnDeleteAll()}
+            onClick={handleDeleteAll}
+          >
+            DELETE
+          </Button>
         </Grid>
+
         <Grid container item xs={6} alignItems="center" justify="flex-end">
           <Typography className={classes.typoLabel}>Firstname :</Typography>
         </Grid>
@@ -134,9 +188,9 @@ function ShowUser({ newuser }) {
                       className={classes.TableCellContent}
                     >
                       <Checkbox
-                        checked={checked}
-                        onChange={handleChecked}
+                        checked={checked[user.userid] || false}
                         value={user.userid}
+                        onChange={handleChangeChecked}
                       />
                     </TableCell>
                     <TableCell
@@ -166,7 +220,7 @@ function ShowUser({ newuser }) {
                     <TableCell align="right">
                       <IconButton
                         aria-label="iconEdit"
-                        onClick={(e) => handleClickEdit()}
+                        onClick={() => handleClickEdit(user)}
                       >
                         <Typography className={classes.typoLabel}>
                           EDIT
@@ -179,7 +233,7 @@ function ShowUser({ newuser }) {
                     <TableCell align="left">
                       <IconButton
                         aria-label="iconDelete"
-                        onClick={() => handleClickDelete(i)}
+                        onClick={() => handleClickDelete(user.userid)}
                       >
                         <Typography className={classes.typoLabel}>
                           DELETE

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Paper,
@@ -88,7 +88,7 @@ const countries = [
   },
 ];
 
-function InputFrom() {
+function InputFrom({ userEdit }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [user, setuser] = useState({
@@ -103,7 +103,6 @@ function InputFrom() {
     passportNo: "",
     expectedSalary: "",
   });
-
   const [citizenID, setcitizenID] = useState({
     pos1: "",
     pos2: "",
@@ -111,6 +110,36 @@ function InputFrom() {
     pos4: "",
     pos5: "",
   });
+  const [edit, setedit] = useState(false);
+
+  useEffect(() => {
+    if (userEdit) {
+      handleSetuserEdit(userEdit);
+      setedit(true);
+    }
+  }, [userEdit]);
+
+  const handleSetuserEdit = (userEdit) => {
+    setuser({
+      title: userEdit.title,
+      fname: userEdit.fname,
+      lname: userEdit.lname,
+      birthday: userEdit.birthday,
+      nation: userEdit.nation,
+      gender: userEdit.gender,
+      flags: userEdit.flags,
+      phone: userEdit.phone,
+      passportNo: userEdit.passportNo,
+      expectedSalary: userEdit.expectedSalary,
+    });
+    setcitizenID({
+      pos1: userEdit.citizenID?.slice(0, 1),
+      pos2: userEdit.citizenID?.slice(1, 5),
+      pos3: userEdit.citizenID?.slice(5, 10),
+      pos4: userEdit.citizenID?.slice(10, 12),
+      pos5: userEdit.citizenID?.slice(12, 13),
+    });
+  };
 
   const handleChangecitizenID = (e) => {
     const { value, name } = e.target;
@@ -129,8 +158,7 @@ function InputFrom() {
   const handleBtnSubmit = (e) => {
     e.preventDefault();
     const data = user;
-    const id = Math.floor(Math.random() * 10000);
-    data.userid = id;
+
     let newcitizenID =
       citizenID.pos1 +
       citizenID.pos2 +
@@ -138,7 +166,14 @@ function InputFrom() {
       citizenID.pos4 +
       citizenID.pos5;
     data.citizenID = newcitizenID;
-    dispatch({ type: "ADD_USER", playload: data });
+    if (edit) {
+      data.userid = userEdit.userid;
+      dispatch({ type: "EDIT_USER", playload: data, id: userEdit.userid });
+    } else {
+      const id = Math.floor(Math.random() * 10000);
+      data.userid = id;
+      dispatch({ type: "ADD_USER", playload: data });
+    }
     clearState();
   };
 
@@ -162,6 +197,7 @@ function InputFrom() {
       pos4: "",
       pos5: "",
     });
+    setedit(false);
   };
 
   return (
