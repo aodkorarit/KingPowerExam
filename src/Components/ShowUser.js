@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector, shallowEqual } from "react-redux";
 import {
   Grid,
   Paper,
@@ -19,6 +19,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Delete, Edit } from "@material-ui/icons";
+import TableUser from "./tableUser";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,10 +49,13 @@ function ShowUser({ newuser, editUser }) {
   const [selectAll, setselectAll] = useState(false);
   const [countSelect, setcountSelect] = useState(0);
   const [checked, setchecked] = useState({});
+  const [userstate, setuserstate] = useState(newuser);
 
   useEffect(() => {
     dispatch({ type: "GET_USER" });
-  }, []);
+    console.log("----");
+    setuserstate(newuser);
+  }, [newuser]);
 
   const handleSelectAllChecked = () => {
     let newState = !selectAll;
@@ -179,9 +183,12 @@ function ShowUser({ newuser, editUser }) {
                   />
                 </TableRow>
               </TableHead>
+              {console.log("--------: ", new Date())}
               <TableBody>
+                {/* {userstate?.map((user, i) => ( */}
                 {newuser?.map((user, i) => (
                   <TableRow key={user.userid}>
+                    {console.log("user: ", user.fname)}
                     <TableCell
                       component="th"
                       scope="row"

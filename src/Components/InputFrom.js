@@ -115,6 +115,7 @@ function InputFrom({ userEdit }) {
   useEffect(() => {
     if (userEdit) {
       handleSetuserEdit(userEdit);
+      console.log("--setedit---");
       setedit(true);
     }
   }, [userEdit]);
@@ -168,7 +169,7 @@ function InputFrom({ userEdit }) {
     data.citizenID = newcitizenID;
     if (edit) {
       data.userid = userEdit.userid;
-      dispatch({ type: "EDIT_USER", playload: data, id: userEdit.userid });
+      dispatch({ type: "UPDATE_USER", playload: data, id: userEdit.userid });
     } else {
       const id = Math.floor(Math.random() * 10000);
       data.userid = id;
