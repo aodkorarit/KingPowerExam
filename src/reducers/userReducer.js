@@ -25,24 +25,11 @@ const userReducer = (state = handleinitialState(), action) => {
       return newState;
 
     case "UPDATE_USER":
-      let index = state.findIndex((user, i) => user.userid == action.id);
-      state[index] = action.playload;
-      // state[index] = {
-      //   userid: action.id,
-      //   title: action.playload.title,
-      //   fname: action.playload.fname,
-      //   lname: action.playload.lname,
-      //   birthday: action.playload.birthday,
-      //   nation: action.playload.nation,
-      //   gender: action.playload.gender,
-      //   flags: action.playload.flags,
-      //   phone: action.playload.phone,
-      //   passportNo: action.playload.passportNo,
-      //   expectedSalary: action.playload.expectedSalary,
-      //   citizenID: action.playload.citizenID,
-      // };
-      localStorage.setItem("user", JSON.stringify(state));
-      return state;
+      newState = [...state];
+      let index = newState.findIndex((user, i) => user.userid == action.id);
+      newState[index] = action.playload;
+      localStorage.setItem("user", JSON.stringify(newState));
+      return newState;
 
     default:
       break;
