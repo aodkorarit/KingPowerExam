@@ -49,13 +49,10 @@ function ShowUser({ newuser, editUser }) {
   const [selectAll, setselectAll] = useState(false);
   const [countSelect, setcountSelect] = useState(0);
   const [checked, setchecked] = useState({});
-  const [userstate, setuserstate] = useState(newuser);
 
   useEffect(() => {
     dispatch({ type: "GET_USER" });
-    console.log("----");
-    setuserstate(newuser);
-  }, [newuser]);
+  }, []);
 
   const handleSelectAllChecked = () => {
     let newState = !selectAll;
@@ -185,7 +182,11 @@ function ShowUser({ newuser, editUser }) {
               </TableHead>
               {console.log("--------: ", new Date())}
               <TableBody>
-                {/* {userstate?.map((user, i) => ( */}
+                {/* {student &&
+                student
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((student, i) => ( */}
+
                 {newuser?.map((user, i) => (
                   <TableRow key={user.userid}>
                     {console.log("user: ", user.fname)}

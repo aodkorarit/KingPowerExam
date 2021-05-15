@@ -218,7 +218,7 @@ function InputFrom({ userEdit }) {
                   <Select
                     labelId="demo-simple-select-label"
                     className={classes.selectTitle}
-                    id="demo-simple-select"
+                    id="selecttitle"
                     value={user.title}
                     name="title"
                     onChange={handleChange}
@@ -278,7 +278,7 @@ function InputFrom({ userEdit }) {
                     variant="inline"
                     format="MM/dd/yyyy"
                     margin="normal"
-                    id="date-picker-inline"
+                    id="date-birthday"
                     label="MM/DD/YYYY"
                     value={user.birthday}
                     required={true}
@@ -319,7 +319,7 @@ function InputFrom({ userEdit }) {
             >
               <Typography className={classes.typoLabel}>CitizenID :</Typography>
               <TextField
-                id="standard-select-currency"
+                id="selectCitizenIDpos1"
                 value={citizenID.pos1}
                 name="pos1"
                 variant="outlined"
@@ -331,7 +331,7 @@ function InputFrom({ userEdit }) {
               />
               <Typography style={{ margin: "0 10px" }}>-</Typography>
               <TextField
-                id="standard-select-currency"
+                id="selectCitizenIDpos2"
                 value={citizenID.pos2}
                 name="pos2"
                 variant="outlined"
@@ -343,7 +343,7 @@ function InputFrom({ userEdit }) {
               />
               <Typography style={{ margin: "0 10px" }}>-</Typography>
               <TextField
-                id="standard-select-currency"
+                id="selectCitizenIDpos3"
                 value={citizenID.pos3}
                 name="pos3"
                 variant="outlined"
@@ -355,7 +355,7 @@ function InputFrom({ userEdit }) {
               />
               <Typography style={{ margin: "0 10px" }}>-</Typography>
               <TextField
-                id="standard-select-currency"
+                id="selectCitizenIDpos4"
                 value={citizenID.pos4}
                 name="pos4"
                 variant="outlined"
@@ -367,7 +367,7 @@ function InputFrom({ userEdit }) {
               />
               <Typography style={{ margin: "0 10px" }}>-</Typography>
               <TextField
-                id="standard-select-currency"
+                id="selectCitizenIDpos5"
                 value={citizenID.pos5}
                 name="pos5"
                 variant="outlined"
@@ -428,7 +428,7 @@ function InputFrom({ userEdit }) {
                 <Select
                   labelId="demo-simple-select-label"
                   className={classes.selectPhoneIcon}
-                  id="demo-simple-select"
+                  id="selectflags"
                   value={user.flags}
                   name="flags"
                   onChange={handleChange}
@@ -461,7 +461,7 @@ function InputFrom({ userEdit }) {
                 </Select>
                 <Typography style={{ margin: "0 10px" }}>-</Typography>
                 <TextField
-                  id="standard-select-currency"
+                  id="selectphone"
                   value={user.phone}
                   name="phone"
                   variant="outlined"
@@ -485,7 +485,7 @@ function InputFrom({ userEdit }) {
                 Passport No :
               </Typography>
               <TextField
-                id="standard-select-currency"
+                id="selectpassportNo"
                 value={user.passportNo}
                 name="passportNo"
                 variant="outlined"
@@ -499,7 +499,7 @@ function InputFrom({ userEdit }) {
                 </Typography>
                 <Typography className={classes.typoLabelRequired}>*</Typography>
                 <TextField
-                  id="standard-select-currency"
+                  id="selectexpectedSalary"
                   value={user.expectedSalary}
                   name="expectedSalary"
                   variant="outlined"
