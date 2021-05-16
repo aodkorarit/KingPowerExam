@@ -216,7 +216,6 @@ function InputFrom({ userEdit }) {
                   className={classes.formControl}
                 >
                   <Select
-                    labelId="demo-simple-select-label"
                     className={classes.selectTitle}
                     id="selecttitle"
                     value={user.title}
@@ -426,7 +425,6 @@ function InputFrom({ userEdit }) {
                 className={classes.formFlex}
               >
                 <Select
-                  labelId="demo-simple-select-label"
                   className={classes.selectPhoneIcon}
                   id="selectflags"
                   value={user.flags}

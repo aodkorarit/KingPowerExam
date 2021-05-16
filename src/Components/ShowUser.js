@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { connect, useDispatch, useSelector, shallowEqual } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import {
   Grid,
   Paper,
-  FormControl,
   Typography,
   TableHead,
   Checkbox,
@@ -15,11 +14,9 @@ import {
   TableContainer,
   TableRow,
   withStyles,
-  FormControlLabel,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Delete, Edit } from "@material-ui/icons";
-import TableUser from "./tableUser";
+import PaginationTable from "./paginationTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,10 +46,19 @@ function ShowUser({ newuser, editUser }) {
   const [selectAll, setselectAll] = useState(false);
   const [countSelect, setcountSelect] = useState(0);
   const [checked, setchecked] = useState({});
+  const [minpage, setminpage] = useState(0);
+  const [maxpage, setmaxpage] = useState(5);
 
   useEffect(() => {
     dispatch({ type: "GET_USER" });
   }, []);
+
+  const handlesetminpage = (value) => {
+    setminpage(value);
+  };
+  const handlesetmaxpage = (value) => {
+    setmaxpage(value);
+  };
 
   const handleSelectAllChecked = () => {
     let newState = !selectAll;
@@ -125,7 +131,11 @@ function ShowUser({ newuser, editUser }) {
         </Grid>
 
         <Grid container item xs={6} alignItems="center" justify="flex-end">
-          <Typography className={classes.typoLabel}>Firstname :</Typography>
+          <PaginationTable
+            newuser={newuser}
+            handlesetminpage={handlesetminpage}
+            handlesetmaxpage={handlesetmaxpage}
+          />
         </Grid>
         <Grid container item xs={12}>
           <TableContainer component={Paper}>
@@ -180,16 +190,9 @@ function ShowUser({ newuser, editUser }) {
                   />
                 </TableRow>
               </TableHead>
-              {console.log("--------: ", new Date())}
               <TableBody>
-                {/* {student &&
-                student
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((student, i) => ( */}
-
-                {newuser?.map((user, i) => (
+                {newuser?.slice(minpage, maxpage).map((user, i) => (
                   <TableRow key={user.userid}>
-                    {console.log("user: ", user.fname)}
                     <TableCell
                       component="th"
                       scope="row"
